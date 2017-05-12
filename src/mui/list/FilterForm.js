@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 import { CardText } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
@@ -9,9 +10,9 @@ import translate from '../../i18n/translate';
 
 const styles = {
     card: { marginTop: '-14px', paddingTop: 0, display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', flexWrap: 'wrap' },
-    body: { display: 'inline-block', display: 'flex', alignItems: 'flex-end' },
+    body: { display: 'flex', alignItems: 'flex-end' },
     spacer: { width: 48 },
-    icon: { color: '#00bcd4', maddingBottom: 0 },
+    icon: { color: '#00bcd4', paddingBottom: 0 },
     clearFix: { clear: 'right' },
 };
 
@@ -24,21 +25,32 @@ export class FilterForm extends Component {
             .filter(filterElement =>
                 filterElement.props.alwaysOn ||
                 displayedFilters[filterElement.props.source] ||
-                typeof initialValues[filterElement.props.source] !== 'undefined'
+                typeof initialValues[filterElement.props.source] !== 'undefined',
             );
     }
 
-    handleHide = (event) => this.props.hideFilter(event.currentTarget.dataset.key);
+    handleHide = event => this.props.hideFilter(event.currentTarget.dataset.key);
 
     render() {
         const { resource, translate } = this.props;
         return (<div>
             <CardText style={styles.card}>
                 {this.getShownFilters().reverse().map(filterElement =>
-                    <div key={filterElement.props.source} style={filterElement.props.style || styles.body}>
+                    <div
+                        key={filterElement.props.source}
+                        data-source={filterElement.props.source}
+                        className="filter-field"
+                        style={filterElement.props.style || styles.body}
+                    >
                         {filterElement.props.alwaysOn ?
                             <div style={styles.spacer}>&nbsp;</div> :
-                            <IconButton iconStyle={styles.icon} onTouchTap={this.handleHide} data-key={filterElement.props.source} tooltip={translate('aor.action.remove_filter')}>
+                            <IconButton
+                                iconStyle={styles.icon}
+                                className="hide-filter"
+                                onTouchTap={this.handleHide}
+                                data-key={filterElement.props.source}
+                                tooltip={translate('aor.action.remove_filter')}
+                            >
                                 <ActionHide />
                             </IconButton>
                         }
@@ -52,7 +64,7 @@ export class FilterForm extends Component {
                                 record={emptyRecord}
                             />
                         </div>
-                    </div>
+                    </div>,
                 )}
             </CardText>
             <div style={styles.clearFix} />
@@ -71,7 +83,11 @@ FilterForm.propTypes = {
 
 const enhance = compose(
     translate,
-    reduxForm({ form: 'filterForm' }),
+    reduxForm({
+        form: 'filterForm',
+        enableReinitialize: true,
+        onChange: (values, dispatch, props) => props.setFilters(values),
+    }),
 );
 
 export default enhance(FilterForm);

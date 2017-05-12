@@ -1,5 +1,66 @@
 # Changelog
 
+## v1.0.2
+
+* Fix typo in Login page instructions in tutorial ([DjLeChuck](https://github.com/DjLeChuck))
+* Fix clear filter breaks filters on subsequent refreshes ([djhi](https://github.com/djhi))
+* Add ability to customize sidebar width ([djhi](https://github.com/djhi))
+* Add example about using auth action creators ([djhi](https://github.com/djhi))
+* Fix `<ReferenceField>` should not fetch null values ([djhi](https://github.com/djhi))
+* Fix typo in `<FilterForm>` styles ([djhi](https://github.com/djhi))
+* Fix Edit View not being updated when fields get changed ([djhi](https://github.com/djhi))
+* Fix DateField tests on all timezones ([djhi](https://github.com/djhi))
+* Add instructions to run the example app in README ([juanda99](https://github.com/juanda99))
+* Fix edge case in `<RichTextField>` when string is falsey value ([faviouz](https://github.com/faviouz))
+
+## v1.0.1
+
+* Fix filters on refresh ([djhi](https://github.com/djhi))
+* Fix `<CheckboxGroupInput>` on IE ([djhi](https://github.com/djhi))
+* Fix warning when using non-string `title` prop in `<Admin>` ([JulienDemangeon](https://github.com/JulienDemangeon))
+* Fix id parameter not decoded in URL ([abarani](https://github.com/abarani))
+* Fix Auth error message not displayed ([tacoo](https://github.com/tacoo))
+* Fix `<Logout>` button not redrawn on theme change ([zyhou](https://github.com/zyhou))
+* Fix validation documentation (`validation` prop renamed to `validate`) ([tacoo](https://github.com/tacoo))
+* Fix JSX syntax highlighting in documentation ([fzaninotto](https://github.com/fzaninotto))
+* Add mention of obligation to declare a `Resource` for `ReferenceInput` to work ([fzaninotto](https://github.com/fzaninotto))
+* Add a missing link in the doc Table of Contents ([leesei](https://github.com/leesei))
+* Add link to Chinese (Traditional) (`cht`) translation ([leesei](https://github.com/leesei))
+* Add link to sandbox in the Contributing documentation ([fzaninotto](https://github.com/fzaninotto))
+
+## v1.0.0
+
+* [BC Break] Switch validation system to redux-form native validation (breaks all input validation)
+* [BC Break] Move error mapping (HTTP to REST) to `authClient` (breaks HTTP 401 and 403 error handling)
+* [BC Break] Upgrade react-router to v4 (breaks custom routes)
+* [BC Break] Refactor Auth side effects to Saga (breaks custom app and custom layout)
+* Add ability to require all components from the `admin-on-rest` package (no more `admin-on-rest/lib/mui`)
+* Add `<SelectField>` component
+* Add `<Restricted>` component
+* Add `LOGIN`, `LOGOUT`, `CHECK`, and `ERROR` actions
+* Add translation of options in `<SelectInput>`, `<AutocompleteInput>`, `<RadioButtonGroupInput>`, and `<CheckboxGroupInput>`
+* Add `linkType` prop to `<ReferenceField>` to allow customization or removal of hyperlink on references
+* Add ability to override the `<Filter>` component by using redux-form's new `onChange` method
+* Add message in `<List>` when the REST API returns no result ([mantis](https://github.com/mantis))
+* Add ability to remove images in `<ImageInput>`
+* Add error when an erroneous REST response does not contain the `error` key
+* Add the ability to pass an initial state to `createStore` ([thedersen](https://github.com/thedersen))
+* Add link from `ImageInput` documentation to REST Client decoration documentation ([leesei](https://github.com/leesei))
+* Add documentation for `parse()` and `format()` in Inputs reference ([leesei](https://github.com/leesei))
+* Add warning in documentation about `<Resource>` required for `ReferenceManyField` usage
+* Add Czech translation ([magikMaker](https://github.com/magikMaker))
+* Add Japanese translation ([valueshimoda](https://github.com/valueshimoda))
+* Add Dutch translation ([pimschaaf](https://github.com/pimschaaf))
+* Add aor-jsonapi-client to the list of REST clients ([maxschridde1494](https://github.com/maxschridde1494))
+* Add e2e tests for post creation ([demougin2u](https://github.com/demougin2u))
+* Upgrade dependencies (including React 15.5.4, redux-form 6.6.3, material-ui 0.17.4)
+* Fix error messages translation
+* Fix ability to disable sort for a field
+* Fix translation warning on tab names
+* Fix Admin component crash while rendering if first resource isn't loaded yet ([lutangar](https://github.com/lutangar))
+* Fix missing menu dock for dashboard
+* Update tutorial screenshots
+
 ## v0.9.4
 
 * Fix `<ReferenceManyField>` documentation by adding a warning about required `<Resource>`
@@ -52,7 +113,7 @@
 * Add dashboard MenuItem on top of Menu when relevant
 * Add ability to execute crud actions without redirect ([thedersen](https://github.com/thedersen))
 * Add support for custom `onBlur`, `onChange`, and `onFocus` props to `<NumberInput>` and `<TextInput>`
-* Add support for image preview change via dispatches form value in `<<ImageInput />`
+* Add support for image preview change via dispatches form value in `<ImageInput />`
 * Add support for custom redirect path when auth check fails ([thedersen](https://github.com/thedersen))
 * Add support for non-cancelable fetch in `crudGetList` action ([thedersen](https://github.com/thedersen))
 * Add support for default locale in `resolveBrowserLocale`

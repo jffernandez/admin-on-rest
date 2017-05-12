@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import FieldTitle from '../../util/FieldTitle';
 
@@ -23,7 +24,8 @@ class NumberInput extends Component {
          * Necessary because of a React bug on <input type="number">
          * @see https://github.com/facebook/react/issues/1425
          */
-        this.handleChange(parseFloat(this.props.input.value));
+        const value = parseFloat(this.props.input.value);
+        this.handleChange(isNaN(value) ? undefined : value);
     }
 
     handleFocus = (event) => {
@@ -69,7 +71,10 @@ NumberInput.propTypes = {
     resource: PropTypes.string,
     source: PropTypes.string,
     step: PropTypes.string.isRequired,
-    validation: PropTypes.object,
+    validate: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.arrayOf(PropTypes.func),
+    ]),
 };
 
 NumberInput.defaultProps = {

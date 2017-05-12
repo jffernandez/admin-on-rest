@@ -75,7 +75,7 @@ The `<Resource>` component is a configuration component that allows to define su
 ```js
 // in posts.js
 import React from 'react';
-import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DateInput } from 'admin-on-rest/lib/mui';
+import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DateInput } from 'admin-on-rest';
 export PostIcon from 'material-ui/svg-icons/action/book';
 
 export const PostList = (props) => (
@@ -136,17 +136,21 @@ See the [REST clients documentation](https://marmelab.com/admin-on-rest/RestClie
 
 Admin-on-rest is designed as a library of loosely coupled React components built on top of [material-ui](http://www.material-ui.com/#/), in addition to controller functions implemented the Redux way. It is very easy to replace one part of admin-on-rest with your own, e.g. to use a custom datagrid, GraphQL instead of REST, or bootstrap instead of Material Design.
 
-## Contributing
-
-Pull requests are welcome. Try to follow the coding style of the existing files, and include unit tests and documentation. Be prepared for a thorough code review, and be patient for the merge - this is an open-source initiative.
+## Run the example
 
 You can run the example app by calling:
 
 ```sh
+npm install
 make run
 ```
 
 And then browse to [http://localhost:8080/](http://localhost:8080/).
+The credentials are **login/password**
+
+## Contributing
+
+Pull requests are welcome. Try to follow the coding style of the existing files, and include unit tests and documentation. Be prepared for a thorough code review, and be patient for the merge - this is an open-source initiative.
 
 If you want to contribute to the documentation, install jekyll, then call
 
@@ -155,6 +159,8 @@ make doc
 ```
 
 And then browse to [http://localhost:4000/](http://localhost:4000/)
+
+*Note*: if you have added a section with heading to the docs, you also have to add it to `docs/_layouts/default.html` (the links on the left) manually.
 
 You can run the unit tests by calling
 

@@ -11,7 +11,7 @@ Admin-on-rest can communicate with any REST server, regardless of the REST diale
 
 The `restClient` parameter of the `<Admin>` component, must be a function with the following signature:
 
-```js
+```jsx
 /**
  * Execute the REST request and return a promise for a REST response
  *
@@ -76,7 +76,7 @@ Access-Control-Expose-Headers: Content-Range
 
 Here is how to use it in your admin:
 
-```js
+```jsx
 // in src/App.js
 import React from 'react';
 
@@ -121,7 +121,7 @@ Access-Control-Expose-Headers: X-Total-Count
 
 Here is how to use it in your admin:
 
-```js
+```jsx
 // in src/App.js
 import React from 'react';
 
@@ -144,7 +144,7 @@ Both the `simpleRestClient` and the `jsonServerRestClient` functions accept an h
 
 That means that if you need to add custom headers to your requests, you just need to *wrap* the `fetchJson()` call inside your own function:
 
-```js
+```jsx
 import { simpleRestClient, fetchUtils, Admin, Resource } from 'admin-on-rest';
 const httpClient = (url, options = {}) => {
     if (!options.headers) {
@@ -168,7 +168,7 @@ Now all the requests to the REST API will contain the `X-Custom-Header: foobar` 
 
 **Tip**: The most common usage of custom headers is for authentication. `fetchJson` has built-on support for the `Authorization` token header:
 
-```js
+```jsx
 const httpClient = (url, options) => {
     options.user = {
         authenticated: true,
@@ -184,7 +184,7 @@ Now all the requests to the REST API will contain the `Authorization: SRTRDFVESG
 
 Instead of writing your own REST client or using a third-party one, you can enhance its capabilities on a given resource. For instance, if you want to use upload components (such as `<ImageInput />` one), you can decorate it the following way:
 
-``` js
+```jsx
 /**
  * Convert a `File` object returned by the upload input into
  * a base 64 string. That's easier to use on FakeRest, used on
@@ -205,16 +205,21 @@ const convertFileToBase64 = file => new Promise((resolve, reject) => {
  */
 const addUploadCapabilities = requestHandler => (type, resource, params) => {
     if (type === 'UPDATE' && resource === 'posts') {
-        if (params.data.picture && params.data.picture.length) {
-            return convertFileToBase64(params.data.picture)
-                .then(base64Picture => requestHandler(type, resource, {
+        if (params.data.pictures && params.data.pictures.length) {
+            // only freshly dropped pictures are instance of File
+            const formerPictures = params.data.pictures.filter(p => !(p instanceof File));
+            const newPictures = params.data.pictures.filter(p => p instanceof File);
+
+            return Promise.all(newPictures.map(convertFileToBase64))
+                .then(base64Pictures => base64Pictures.map(picture64 => ({
+                    src: picture64,
+                    title: `${params.data.title}`,
+                })))
+                .then(transformedNewPictures => requestHandler(type, resource, {
                     ...params,
                     data: {
                         ...params.data,
-                        picture: ({
-                            src: base64Picture,
-                            title: params.title,
-                        })),
+                        pictures: [...transformedNewPictures, ...formerPictures],
                     },
                 }));
         }
@@ -228,7 +233,7 @@ export default addUploadCapabilities;
 
 This way, you can use simply your upload-capable client to your app calling this decorator:
 
-``` js
+```jsx
 import jsonRestClient from 'aor-json-rest-client';
 import addUploadFeature from './addUploadFeature';
 
@@ -268,7 +273,7 @@ Type                 | Params format
 
 Examples:
 
-```js
+```jsx
 restClient(GET_LIST, 'posts', {
     pagination: { page: 1, perPage: 5 },
     sort: { field: 'title', order: 'ASC' },
@@ -304,7 +309,7 @@ A `{Record}` is an object literal with at least an `id` property, e.g. `{ id: 12
 
 Examples:
 
-```js
+```jsx
 restClient(GET_LIST, 'posts', {
     pagination: { page: 1, perPage: 5 },
     sort: { field: 'title', order: 'ASC' },

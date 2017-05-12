@@ -1,6 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Card, CardTitle, CardText } from 'material-ui/Card';
+import { Card, CardText } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
 import ViewTitle from '../layout/ViewTitle';
@@ -8,12 +9,6 @@ import Title from '../layout/Title';
 import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../../actions/dataActions';
 import DefaultActions from './EditActions';
 import translate from '../../i18n/translate';
-
-/**
- * Turns a children data structure (either single child or array of children) into an array.
- * We can't use React.Children.toArray as it loses references.
- */
-const arrayizeChildren = children => (Array.isArray(children) ? children : [children]);
 
 export class Edit extends Component {
     constructor(props) {
@@ -41,18 +36,6 @@ export class Edit extends Component {
         if (this.props.id !== nextProps.id) {
             this.updateData(nextProps.resource, nextProps.id);
         }
-    }
-
-    // FIXME Seems that the cloneElement in CrudRoute slices the children array, which makes this necessary to avoid rerenders
-    shouldComponentUpdate(nextProps) {
-        if (nextProps.isLoading !== this.props.isLoading) {
-            return true;
-        }
-
-        const currentChildren = arrayizeChildren(this.props.children);
-        const newChildren = arrayizeChildren(nextProps.children);
-
-        return newChildren.every((child, index) => child === currentChildren[index]);
     }
 
     getBasePath() {
@@ -96,7 +79,7 @@ export class Edit extends Component {
         this.previousKey = key;
 
         return (
-            <div>
+            <div className="edit-page">
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }} key={key}>
                     {actions && React.cloneElement(actions, {
                         basePath,
@@ -112,6 +95,7 @@ export class Edit extends Component {
                         resource,
                         basePath,
                         record: data,
+                        translate,
                     })}
                     {!data && <CardText>&nbsp;</CardText>}
                 </Card>
@@ -131,7 +115,7 @@ Edit.propTypes = {
     id: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func,
@@ -139,8 +123,8 @@ Edit.propTypes = {
 
 function mapStateToProps(state, props) {
     return {
-        id: props.params.id,
-        data: state.admin[props.resource].data[props.params.id],
+        id: decodeURIComponent(props.match.params.id),
+        data: state.admin[props.resource].data[decodeURIComponent(props.match.params.id)],
         isLoading: state.admin.loading > 0,
     };
 }
